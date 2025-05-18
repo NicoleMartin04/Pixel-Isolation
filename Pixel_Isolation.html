@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pixel Isolation</title>
+<script type="module" src="https://unpkg.com/@google/model-viewer"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<style>
+  html, body {
+    margin: 0; padding: 0;
+    overflow-x: hidden;
+    width: 100vw; height: 100vh;
+  }
+  body {
+    display: flex; justify-content: center; align-items: center;
+    height: 100vh; margin: 0;
+    background-color: #f0f0f0;
+  }
+  model-viewer {
+    width: 100vw;
+    height: 100vh;
+    display: block;
+  }
+
+  /* Loading Screen */
+  #loading-screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: rgb(15, 15, 15);
+    background-image: url('images/loading-background.jpg'); /* adjust relative path */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
+    z-index: 9999;
+    pointer-events: all;
+    user-select: none;
+    transition: opacity 0.5s ease;
+  }
+  
+
+  #progress-bar-container {
+    width: 80%;
+    max-width: 400px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.434);
+    border-radius: 6px;
+    margin-top: 15px;
+    overflow: hidden;
+  }
+
+  #progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #62cf7a;
+    border-radius: 6px 0 0 6px;
+    transition: width 0.3s ease;
+  }
+
+  /* hotspots and annotations CSS... */
+  .hotspot {
+    background: #fff;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    color: rgba(0, 0, 0, 0.8);
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.3s ease;
+    overflow: visible;
+  }
+  .hotspot:hover {
+    background: #ddd;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  .annotation {
+    background-color: #93c4ff;
+    position: absolute;
+    top: -50px;
+    left: 16px;
+    border-radius: 5px;
+    padding: 12px;
+    text-align: left;
+    font-family: Futura, Helvetica Neue, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    display: none;
+    width: 280px;
+    max-width: 90vw;
+    white-space: normal;
+    word-break: normal;
+    line-height: 1.5;
+    box-sizing: border-box;
+    z-index: 10;
+    overflow-wrap: break-word;
+    max-inline-size: 90vw;
+  }
+
+  button[slot="hotspot-0"] .annotation {
+    width: 220px; /* adjust width of monitor screen annotation */
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .annotation {
+      font-size: 10px;
+      padding: 0.4em 0.8em;
+    }
+  }
+  @media (max-width: 480px) {
+    model-viewer {
+      height: 70vh;
+    }
+    .annotation {
+      font-size: 9px;
+      padding: 0.3em 0.6em;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div id="loading-screen">
+  Loading model, hang tight!
+  <div id="progress-bar-container">
+    <div id="progress-bar"></div>
+  </div>
+</div>
+
+<!-- model-viewer with hotspots -->
+<model-viewer 
+  id="basic-scene-demo"
+  src="public/Pixel Isolation/Pixel Isolation.gltf" 
+  alt="A 3D model of a basic scene" 
+  camera-controls
+  touch-action="none"
+  disable-tap
+  field-of-view="45deg"
+  camera-orbit="0deg 75deg 0m"
+  camera-target="0m 1.4m 0m"
+  shadow-intensity="0.6"
+  exposure=".65"
+  environment-image="neutral"
+  interpolation-decay="150" 
+  min-camera-orbit="auto auto 135%">
+
+  <!-- Hotspots -->
+  <button class="hotspot" slot="hotspot-0" 
+    data-position="4.0 2.8 -3" 
+    data-normal="0.1 0.5 0.5" data-orbit="8deg 80deg 10m" data-target="-0.6m -1.8m -25m">
+    <div class="annotation">For this individual, video games serve as more than just entertainment. They offer a temporary escape from the weight of their mental health struggles. These virtual worlds provide a sense of control, peace, community, and emotional safety, which is absent from their everyday life.</div>
+  </button>
+  
+  <button class="hotspot" slot="hotspot-1" data-position="-4 1 2.7" data-normal="0.1 0.5 0.5" data-orbit="45deg 40deg 0m" data-target="-16m -19.5m -9m">
+    <div class="annotation">As their mental health has deteriorated, they've increasingly withdrawn from friends and family, often ignoring messages of concern. They've also struggled to meet assignment deadlines and have missed important events, such as their birthday.</div>
+  </button>
+
+  <button class="hotspot" slot="hotspot-2" data-position="-3.1 0.7 1.15" data-normal="0.1 0.5 0.5" data-orbit="60deg 25deg 0m" data-target="-13m -23.5m -4.2m">
+    <div class="annotation">These various medications are perscribed to individuals diagnosed with clinical depression or anxiety disorders. They help manage symptoms, allowing people to navigate their daily lives more effectively.</div>
+  </button>
+
+  <button class="hotspot" slot="hotspot-3" data-position="-3.1 2.1 -3.4" data-normal="0.1 0.5 0.5" data-orbit="10deg 0deg 0m" data-target="-3.4m -23.5m -3m">
+    <div class="annotation">This journal reveals the individual's deep inner thoughts and the gradual decline of their mental health.</div>
+  </button>
+
+  <button class="hotspot" slot="hotspot-4" data-position="4 -1 1.75" data-normal="0.1 0.5 0.5" data-orbit="60deg 80deg 0m" data-target="-11m -1.4m -5m">
+    <div class="annotation">Overtime, piles of unwashed clothes have accumulated. This reflects a decline in the individual's mental health, as even basic household chores have become increasingly overwhelming.</div>
+  </button>
+
+  <button class="hotspot" slot="hotspot-5" data-position="1.1 -0.1 -3.2"  data-normal="0.1 0.5 0.5" data-orbit="-25deg 80deg 0m" data-target="10m -4.8m -23.6m">
+    <div class="annotation">Scattered soda cans and bottles hint at the individual's growing dependency on caffeine. Haunted by worsening mental health, they struggle to quiet their mind when trying to fall alseep. Instead, they turn to caffeinated drinks to push through the fatigue of yet another sleepless night.</div>
+  </button>
+  
+</model-viewer>
+
+<script type="module">
+  const modelViewer = document.querySelector("#basic-scene-demo");
+  const loadingScreen = document.getElementById('loading-screen');
+  const progressBar = document.getElementById('progress-bar');
+
+  // Update progress bar width on model load progress
+  modelViewer.addEventListener('progress', (event) => {
+    const progressPercent = event.detail.totalProgress * 100;
+    progressBar.style.width = progressPercent + '%';
+  });
+
+  // Hide loading screen smoothly once model is fully loaded
+  modelViewer.addEventListener('load', () => {
+    loadingScreen.style.opacity = '0';
+    setTimeout(() => {
+      loadingScreen.style.display = 'none';
+    }, 600); // match CSS transition duration
+  });
+
+  // Your existing annotation logic...
+  const defaultCameraOrbit = modelViewer.getAttribute("camera-orbit");
+  const defaultCameraTarget = modelViewer.getAttribute("camera-target");
+  let lastClickedButton = null;
+  let orbitControlsEnabled = true;
+
+  const annotationClicked = (hotspot) => {
+    let annotation = hotspot.querySelector('.annotation'); 
+    let dataset = hotspot.dataset;
+
+    annotation.style.display = annotation.style.display === 'block' ? 'none' : 'block';
+
+    if (lastClickedButton === hotspot) {
+      modelViewer.setAttribute("camera-orbit", defaultCameraOrbit);
+      modelViewer.setAttribute("camera-target", defaultCameraTarget);
+      modelViewer.setAttribute("field-of-view", "45deg");
+      modelViewer.setAttribute("camera-controls", ""); // Re-enable orbit controls
+      modelViewer.removeAttribute("disable-pan");
+      modelViewer.removeAttribute("disable-zoom");
+      modelViewer.removeAttribute("disable-rotate");
+      orbitControlsEnabled = true;
+      lastClickedButton = null;
+    } else {
+      modelViewer.setAttribute("camera-orbit", dataset.orbit);
+      modelViewer.setAttribute("camera-target", dataset.target);
+      modelViewer.setAttribute("field-of-view", "35deg");
+      modelViewer.removeAttribute("camera-controls"); // Disable orbit controls
+      modelViewer.setAttribute("disable-pan", "");
+      modelViewer.setAttribute("disable-rotate", "");
+      orbitControlsEnabled = false;
+      lastClickedButton = hotspot;
+    }
+  };
+
+  modelViewer.querySelectorAll('.hotspot').forEach(hotspot => {
+    hotspot.addEventListener('click', () => {
+        const audio = document.getElementById('click-sound');
+        if (audio) {
+            audio.currentTime = 0; //rewind to start
+            audio.play().catch(e => {
+                console.log('Audio play prevented');
+            });
+        }
+        annotationClicked(hotspot);
+    });
+  });
+   
+</script>
+
+<audio id="click-sound" src="public/Sound Effects/Mechanical, Click, Miniature Button, Multiple Pushes SND6560 1.wav" preload="auto"></audio>
+
+</body>
+</html>
